@@ -41,7 +41,7 @@ Distribuited collections of Rows that follows a schema (runtime)
 * immutable
 * Created via transformations
   * narrow -> operation done in the scope of one partition (map, row by row operation)
-  * wide -> !! more than one partition (sort, sum)
+  * wide -> !! more than one partition (sort, sum, joins)
 * shuffle -> move data among nodes
 * lazy evaluation (waits until a action is called to start the computation)
 * logical plan (graph +narrow/wide transforms) -> physical plan -> execution on the nodes
