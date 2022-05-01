@@ -1,7 +1,9 @@
 package part2dataframes
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
+
+import utils.Session.spark
+import utils.Read
 
 
 object Expressions extends App {
@@ -21,14 +23,7 @@ object Expressions extends App {
     *   sbt "runMain part2dataframes.Expressions"
     */
 
-  val spark = SparkSession.builder()
-    .master("local")
-    .appName("Expressions")
-    .getOrCreate()
-
-  val moviesDF = spark.read
-    .option("inferSchema", "true")
-    .json("src/main/resources/data/movies.json")
+  val moviesDF = Read.json("movies")
 
   val moviesTitleDirectorDateDF = moviesDF.select("Title", "Director", "Release_Date")
   moviesTitleDirectorDateDF.printSchema()

@@ -1,10 +1,12 @@
 package part2dataframes
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
+import utils.Session.spark
+import utils.Read
 
-object DataFrameBasics extends App {
+
+object DataFrames extends App {
   /**
     * Exercise:
     * 1) Create a manual DF describing smartphones
@@ -18,11 +20,11 @@ object DataFrameBasics extends App {
     *   - count the number of rows, call count()
     */
 
-  val spark = SparkSession.builder()
-    .appName("DataFrameBasics")
-    .master("local")
-    .getOrCreate()
-
+  /**
+    * How to run
+    *
+    *   sbt "runMain part2dataframes.DataFrames"
+    */
 
   // 1)
   import spark.implicits._
@@ -35,11 +37,8 @@ object DataFrameBasics extends App {
 
   df1.show()
 
-
   // 2)
-  val moviesDF = spark.read
-    .option("inferSchema", "true")
-    .json("src/main/resources/data/movies.json")
+  val moviesDF = Read.json("movies")
 
   moviesDF.printSchema()
 

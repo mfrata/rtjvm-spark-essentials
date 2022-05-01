@@ -1,7 +1,9 @@
 package part2dataframes
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
+
+import utils.Session.spark
+import utils.Read
 
 
 object DataSources extends App {
@@ -20,14 +22,7 @@ object DataSources extends App {
     *   docker-compose down
     */
 
-  val spark = SparkSession.builder()
-    .master("local")
-    .appName("DataSources")
-    .getOrCreate()
-
-  val moviesDF = spark.read
-    .option("inferSchema", "true")
-    .json("src/main/resources/data/movies.json")
+  val moviesDF = Read.json("movies")
 
   moviesDF.write
     .mode("overwrite")
@@ -40,15 +35,10 @@ object DataSources extends App {
 
   moviesDF.write
     .format("jdbc")
-    .options(
-      Map(
-        "driver" -> "org.postgresql.Driver",
-        "url" -> "jdbc:postgresql://localhost:5432/rtjvm",
-        "user" -> "docker",
-        "password" -> "docker",
-        "dbtable" -> "public.movies"
-      )
-    ).save()
+    .mode("overwrite")
+    .options(Read.databaseConnectionConfig)
+    .option("dbtable", "public.movies")
+    .save()
 
   spark.stop()
 }

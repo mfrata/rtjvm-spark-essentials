@@ -1,7 +1,9 @@
 package part2dataframes
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
+
+import utils.Session.spark
+import utils.Read
 
 
 object Aggregations extends App {
@@ -20,14 +22,7 @@ object Aggregations extends App {
     *   sbt "runMain part2dataframes.Aggregations"
     */
 
-  val spark = SparkSession.builder()
-    .master("local")
-    .appName("Expressions")
-    .getOrCreate()
-
-  val moviesDF = spark.read
-    .option("inferSchema", "true")
-    .json("src/main/resources/data/movies.json")
+  val moviesDF = Read.json("movies")
 
   val us_gross = col("US_Gross")
 
