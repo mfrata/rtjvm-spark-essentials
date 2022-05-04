@@ -20,6 +20,11 @@ object Read {
     .option("inferSchema", "true")
     .json(s"$baseDataPath/$name.json")
 
+  def csv(name: String): DataFrame = spark.read
+    .option("header", "true")
+    .option("inferSchema", "true")
+    .csv(s"$baseDataPath/$name.csv")
+
   def table(name: String): DataFrame = spark.read
     .format("jdbc")
     .options(databaseConnectionConfig)
